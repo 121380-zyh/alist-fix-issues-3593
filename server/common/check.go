@@ -16,12 +16,8 @@ func CanWrite(meta *model.Meta, path string) bool {
 }
 
 func CanAccess(user *model.User, meta *model.Meta, reqPath string, password string) bool {
-	// if the reqPath is a file, no need to check password or permissions
-	if !utils.IsDir(reqPath) {
-		return true
-	}
 	// if the reqPath is in hide (only can check the nearest meta) and user can't see hides, can't access
-	if meta != nil && !user.CanSeeHides() && meta.Hide != "" && !utils.PathEqual(meta.Path, reqPath) {
+	if meta != nil && !user.CanSeeHides() && meta.Hide != "" && !utils.IsSubPath(meta.Path, reqPath) {
 		for _, hide := range strings.Split(meta.Hide, "\n") {
 			re := regexp.MustCompile(hide)
 			if re.MatchString(reqPath[len(meta.Path)+1:]) {
@@ -29,18 +25,32 @@ func CanAccess(user *model.User, meta *model.Meta, reqPath string, password stri
 			}
 		}
 	}
-	// if is not guest and can access without password
+
+	// if user can access without password, allow access
 	if user.CanAccessWithoutPassword() {
 		return true
 	}
-	// if meta is nil or password is empty, can access
+
+	// check if the reqPath is a file
+	if !utils.IsDir(reqPath) {
+		return true
+	}
+
+	// if the user is a guest and the reqPath is a directory, require password
+	if user.IsGuest() && meta != nil && meta.Password != "" && utils.IsSubPath(meta.Path, reqPath) {
+		return meta.Password == password
+	}
+
+	// if meta is nil or password is empty, allow access
 	if meta == nil || meta.Password == "" {
 		return true
 	}
-	// if meta doesn't apply to sub_folder, can access
-	if !utils.PathEqual(meta.Path, reqPath) && !meta.PSub {
+
+	// if meta doesn't apply to sub_folder, allow access
+	if !utils.IsSubPath(meta.Path, reqPath) && !meta.PSub {
 		return true
 	}
+
 	// validate password
 	return meta.Password == password
 }
