@@ -2,7 +2,6 @@ package utils
 
 import (
 	"net/url"
-	"os"
 	stdpath "path"
 	"strings"
 
@@ -24,13 +23,10 @@ func FixAndCleanPath(path string) string {
 	}
 	return stdpath.Clean(path)
 }
-//读取是否是文件还是文件夹
+
 func IsDir(path string) bool {
-	fileInfo, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-	return fileInfo.IsDir()
+	ext := Ext(path)
+	return ext == ""
 }
 
 // PathAddSeparatorSuffix Add path '/' suffix
