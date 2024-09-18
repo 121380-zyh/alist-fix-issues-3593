@@ -20,7 +20,7 @@ import (
 	"github.com/alist-org/alist/v3/pkg/utils"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 
-	driver115 "github.com/QAQBytes/115driver/pkg/driver"
+	driver115 "github.com/SheltonZhu/115driver/pkg/driver"
 	crypto "github.com/gaoyb7/115drive-webdav/115"
 	"github.com/orzogc/fake115uploader/cipher"
 	"github.com/pkg/errors"

@@ -3,7 +3,7 @@ package _115_share
 import (
 	"context"
 
-	driver115 "github.com/QAQBytes/115driver/pkg/driver"
+	driver115 "github.com/SheltonZhu/115driver/pkg/driver"
 	"github.com/alist-org/alist/v3/internal/driver"
 	"github.com/alist-org/alist/v3/internal/errs"
 	"github.com/alist-org/alist/v3/internal/model"

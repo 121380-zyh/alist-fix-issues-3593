@@ -1,7 +1,7 @@
 package _115
 
 import (
-	"github.com/QAQBytes/115driver/pkg/driver"
+	"github.com/SheltonZhu/115driver/pkg/driver"
 	"github.com/alist-org/alist/v3/internal/model"
 	"github.com/alist-org/alist/v3/pkg/utils"
 	"time"
